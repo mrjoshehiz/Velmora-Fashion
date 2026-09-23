@@ -1,0 +1,3 @@
+import Link from "next/link";
+import { Check } from "lucide-react";
+export default async function Confirmed({searchParams}:{searchParams:Promise<{id?:string}>}){const {id}=await searchParams;return <main className="confirmation-page"><div className="confirmation-mark"><Check size={30}/></div><span className="eyebrow">VELMORA / ORDER REQUEST</span><h1>THANK YOU.</h1><h2>Your order request is received.</h2><p>Reference: <strong>{id||"Pending"}</strong></p><p>This preview has not taken payment. The request is saved for the store team to review.</p><div><Link className="dark-button" href="/shop">CONTINUE SHOPPING</Link><Link className="text-link" href="/account">VIEW YOUR ORDERS ↗</Link></div></main>}

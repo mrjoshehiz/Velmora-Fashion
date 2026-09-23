@@ -1,0 +1,8 @@
+import { NextRequest, NextResponse } from "next/server";
+import { env } from "cloudflare:workers";
+import { getChatGPTUser } from "@/app/chatgpt-auth";
+import { ensureCatalog } from "@/lib/catalog";
+export const dynamic="force-dynamic";
+export async function GET(){const user=await getChatGPTUser();if(!user)return NextResponse.json({error:"Sign in to view saved pieces."},{status:401});try{await ensureCatalog();const rows=await env.DB!.prepare("SELECT p.* FROM wishlist w JOIN products p ON p.id=w.product_id WHERE w.user_id=? AND p.active=1 ORDER BY w.id DESC").bind(user.userId).all();return NextResponse.json({products:rows.results})}catch{return NextResponse.json({error:"Saved pieces are unavailable."},{status:503})}}
+export async function POST(request:NextRequest){const user=await getChatGPTUser();if(!user)return NextResponse.json({error:"Sign in to save pieces."},{status:401});const {productId}=await request.json() as {productId:string};if(typeof productId!=="string")return NextResponse.json({error:"Invalid piece."},{status:400});try{await ensureCatalog();await env.DB!.prepare("INSERT OR IGNORE INTO wishlist (user_id,product_id) SELECT ?,id FROM products WHERE id=? AND active=1").bind(user.userId,productId).run();return NextResponse.json({saved:true})}catch{return NextResponse.json({error:"Could not save this piece."},{status:500})}}
+export async function DELETE(request:NextRequest){const user=await getChatGPTUser();if(!user)return NextResponse.json({error:"Sign in required."},{status:401});const {productId}=await request.json() as {productId:string};await env.DB!.prepare("DELETE FROM wishlist WHERE user_id=? AND product_id=?").bind(user.userId,productId).run();return NextResponse.json({saved:false})}

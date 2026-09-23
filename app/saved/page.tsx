@@ -1,0 +1,6 @@
+"use client";
+import { useEffect,useState } from "react";
+import Link from "next/link";
+import type { Product } from "@/lib/shared";
+import { ProductCard } from "@/components/product-card";
+export default function Saved(){const [products,setProducts]=useState<Product[]>([]);const [status,setStatus]=useState("Loading saved pieces…");useEffect(()=>{fetch("/api/wishlist").then(async r=>{if(r.status===401){setStatus("Sign in to see your saved pieces.");return}if(!r.ok)throw Error();const data=await r.json() as {products:Product[]};setProducts(data.products);setStatus("")}).catch(()=>setStatus("Saved pieces are temporarily unavailable."))},[]);return <main className="inner-page"><span className="eyebrow">VELMORA / YOUR EDIT</span><h1>SAVED PIECES</h1><p>The pieces you have your eye on.</p>{products.length?<div className="catalog-grid">{products.map(p=><ProductCard product={p} key={p.id} initialSaved onUnsave={id=>setProducts(current=>current.filter(item=>item.id!==id))}/>)}</div>:<div className="empty-state"><h2>{status||"Nothing saved yet."}</h2><Link className="text-link" href={status.startsWith("Sign")?"/account":"/shop"}>{status.startsWith("Sign")?"SIGN IN":"EXPLORE THE COLLECTION"} ↗</Link></div>}</main>}
