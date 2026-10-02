@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import "./atelier.css";
+import "./responsive.css";
 import { StoreProvider } from "@/components/store-provider";
 import { StoreFooter, StoreHeader } from "@/components/store-header";
 import { StyleChat } from "@/components/style-chat";
