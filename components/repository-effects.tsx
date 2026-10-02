@@ -4,14 +4,15 @@ import type { ReactNode } from "react";
 const Gradient=lazy(()=>import('./shader-colour'));
 const Metal=lazy(()=>import('./liquid-brand'));
 class EffectBoundary extends Component<{children:ReactNode},{failed:boolean}>{state={failed:false};static getDerivedStateFromError(){return {failed:true}}render(){return this.state.failed?null:this.props.children}}
+function graphicsAvailable(){try{const canvas=document.createElement("canvas");const gl=canvas.getContext("webgl2");if(!gl)return false;gl.getExtension("WEBGL_lose_context")?.loseContext();return true}catch{return false}}
 export function RepositoryColour(){
  const ref=useRef<HTMLDivElement>(null);const [visible,setVisible]=useState(false);
- useEffect(()=>{const node=ref.current;if(!node)return;const mq=matchMedia('(prefers-reduced-motion: reduce)');const observer=new IntersectionObserver(([e])=>setVisible(e.isIntersecting&&!mq.matches),{rootMargin:'100px'});observer.observe(node);return()=>observer.disconnect()},[]);
+ useEffect(()=>{const node=ref.current;if(!node||!graphicsAvailable())return;const mq=matchMedia('(prefers-reduced-motion: reduce)');const observer=new IntersectionObserver(([e])=>setVisible(e.isIntersecting&&!mq.matches),{rootMargin:'100px'});observer.observe(node);return()=>observer.disconnect()},[]);
  return <div className="repository-colour" ref={ref} aria-hidden="true">{visible&&<EffectBoundary><Suspense fallback={null}><Gradient/><Metal/></Suspense></EffectBoundary>}</div>
 }
 export function RepositoryGlass(){
  const ref=useRef<HTMLDivElement>(null);
- useEffect(()=>{const host=ref.current;if(!host||matchMedia('(prefers-reduced-motion: reduce)').matches)return;let cancelled=false;let dispose:(()=>void)|undefined;
+ useEffect(()=>{const host=ref.current;if(!host||!graphicsAvailable()||matchMedia('(prefers-reduced-motion: reduce)').matches)return;let cancelled=false;let dispose:(()=>void)|undefined;
  const observer=new IntersectionObserver(async([entry])=>{if(!entry.isIntersecting||dispose)return;observer.disconnect();try{const {Container}=await import('@/lib/effects/liquid-glass');if(cancelled)return;
  // Snapshot only the nearby campaign image, rather than the whole shop or private form data.
  const photo=host.closest('.atelier-hero-image')?.querySelector('img');if(!photo)return;if(!photo.complete)await photo.decode();if(cancelled)return;
