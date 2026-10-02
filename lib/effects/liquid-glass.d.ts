@@ -1,1 +1,0 @@
-export class Container { constructor(options?:{borderRadius?:number;type?:string;tintOpacity?:number}); element: HTMLDivElement; canvas: HTMLCanvasElement; gl: WebGLRenderingContext|null; updateSizeFromDOM():void; destroy():void; static pageSnapshot:HTMLCanvasElement|null; }
