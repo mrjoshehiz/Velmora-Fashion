@@ -1,3 +1,5 @@
+/* Browser storage and URL state are restored after mount to preserve the server hydration snapshot. */
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { ArrowRight, Bookmark, Camera, Check, Heart, Rotate3D, Search } from "lucide-react";

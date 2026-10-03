@@ -12,16 +12,21 @@ Changes:
 - Replace the custom mobile-menu backdrop with the existing Radix Sheet for focus management and Escape dismissal; add a skip link and shared focus styling.
 - Delete the unused carousel component and its CSS, old navigation styles, marquee styles, chat badge styles and bag-dot styles.
 
-Validation completed:
+Validation completed (2026-10-03):
 
-- Parsed all edited TSX files with the installed Playwright Babel parser.
-- Rendered the homepage, header, footer and chat trigger to a static source fixture using seed products and mock hooks/infrastructure. This checks initial source rendering only.
-- Checked the diff for whitespace errors and reviewed imports and routes.
+- Installed all dependencies from the frozen pnpm lockfile.
+- Impeccable engine 0.1.11 installed in the versioned local cache; context loading succeeds.
+- Manual Impeccable detector reports no findings for the changed header, chat, bag provider and editorial stylesheet.
+- `pnpm lint` passes with 0 errors and 28 existing warnings (image optimization, unused declarations and internal-navigation warnings).
+- `pnpm exec tsc --noEmit` passes.
+- `pnpm build` passes, including the managed Linux build after execution-profile configuration.
+- Fixed the home navigation link and escaped about-page text. Excluded vendored Impeccable scripts from storefront linting. Documented the deliberate after-mount browser-state restoration for SSR hydration.
+- Product-card quick add is disabled for sold-out items, matching the product detail page.
+- Chat checks HTTP status before presenting a response as successful.
+- Supervised preview starts after restoring the managed Linux execution profile.
 
-Validation blocked:
+Validation remaining:
 
-- Dependency installation cannot reach the npm registry in this workspace. Full type checking, linting and the application build have not run.
-- Chromium launch is blocked by the workspace socket permissions. No desktop/mobile screenshots or interactive browser checks completed.
-- Impeccable's engine download is blocked. Its CLI detector and context command have not run successfully.
+The required control-browser capability is unavailable in this session. No rendered desktop/mobile layout inspection or interactive browser testing was performed. Source review is not a substitute for exercising mobile Sheet focus/Escape, Explore, product sizes/save/bag persistence, quantity/remove, and chat responses.
 
-Before merging, install dependencies in a working environment, run `pnpm lint` and `pnpm build`, and inspect the homepage, catalog, product sizes/save/bag actions, Explore menu, mobile Sheet, chat and runway at desktop and narrow mobile widths. Verify safe-area spacing and reduced-motion behavior. This change is kept as a draft until those checks are complete.
+Keep PR #1 in draft and do not merge or deploy until this required browser review is complete. The production site is unchanged.

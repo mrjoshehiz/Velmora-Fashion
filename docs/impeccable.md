@@ -2,9 +2,9 @@
 
 The official Codex skill payload from https://github.com/pbakaus/impeccable is vendored in `.agents/skills/impeccable/`, including its launcher, command references and Apache 2.0 license. It is development tooling, not a storefront runtime dependency. The design pass follows its distill and craft-floor guidance.
 
-The launcher pins engine 0.1.11. The skill files are installed; the engine could not be downloaded in this workspace, so automatic detection is not active. No automatic hook manifest is installed.
+The launcher pins engine 0.1.11. The engine is installed in the local versioned cache and `impeccable context` runs successfully. Detection is run manually; no automatic hook manifest is installed.
 
-From a network-enabled project checkout, refresh and complete the CLI setup with:
+To refresh the installed skill in another checkout:
 
 ```sh
 npx impeccable install --providers=codex --scope=project
