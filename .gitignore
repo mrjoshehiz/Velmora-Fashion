@@ -40,7 +40,21 @@ next-env.d.ts
 /.wrangler/
 # Checkout-local execution profile and tool state; never publish them.
 /.sites-runtime/
-/.agents/
+/.agents/*
+!/.agents/skills/
+/.agents/skills/*
+!/.agents/skills/impeccable/
 /.codex/
 /outputs/
 /work/
+
+# Impeccable working files and developer cache
+**/.impeccable/config.local.json
+**/.impeccable/hook.cache.json
+**/.impeccable/hook.pending.json
+**/.impeccable/review/
+**/.impeccable/*.png
+**/.impeccable/live/server.json
+**/.impeccable/live/sessions/
+**/.impeccable/live/previews/
+**/.impeccable/live/cache/

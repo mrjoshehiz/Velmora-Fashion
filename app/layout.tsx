@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import "./editorial.css";
 import { StoreProvider } from "@/components/store-provider";
 import { StoreFooter, StoreHeader } from "@/components/store-header";
 import { StyleChat } from "@/components/style-chat";
@@ -26,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased"><StoreProvider><StoreHeader/>{children}<StoreFooter/><StyleChat/></StoreProvider></body>
+      <body className="antialiased"><StoreProvider><a href="#main-content" className="skip-link">Skip to content</a><StoreHeader/><div id="main-content" tabIndex={-1}>{children}</div><StoreFooter/><StyleChat/></StoreProvider></body>
     </html>
   );
 }

@@ -1,6 +1,8 @@
+/* Browser storage and URL state are restored after mount to preserve the server hydration snapshot. */
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
-import { ArrowRight, Bookmark, Camera, Check, Heart, Rotate3D, Search, Sparkles } from "lucide-react";
+import { ArrowRight, Bookmark, Camera, Check, Heart, Rotate3D, Search } from "lucide-react";
 import type { Product } from "@/lib/shared";
 import { naira } from "@/lib/shared";
 import { useStore } from "./store-provider";
@@ -36,7 +38,7 @@ export function FashionLab({products}:{products:Product[]}){
       <div className="stylist-grid"><div className="stylist-controls">
         <Choice title="Occasion" options={occasions} value={occasion} change={setOccasion}/><Choice title="Preferred fit" options={silhouettes} value={silhouette} change={setSilhouette}/><Choice title="Style personality" options={personalities} value={personality} change={setPersonality}/><Choice title="Setting" options={settings} value={setting} change={setSetting}/>
         <label className="budget-control"><span>Budget</span><strong>{naira(budget)}</strong><input aria-label="Budget" type="range" min="50000" max="120000" step="5000" value={budget} onChange={e=>setBudget(Number(e.target.value))}/></label>
-        <button className="lab-primary" onClick={styleMe}><Sparkles size={17}/> Create my look</button>
+        <button className="lab-primary" onClick={styleMe}><ArrowRight size={17}/> Create my look</button>
       </div><article className="stylist-result" id="stylist-result"><div className="result-image"><img src={chosen.image} alt={chosen.name}/><span>{chosen.color} / {chosen.category}</span></div><div className="result-copy"><span className="lab-kicker">YOUR EDIT</span><h3>{chosen.name}</h3><b>{naira(chosen.price)}</b><p>For your {setting.toLowerCase()}, we selected the {chosen.name} with {accessories.shoes[look.shoes].toLowerCase()}, a {accessories.bag[look.bag].toLowerCase()} and {accessories.jewellery[look.jewellery].toLowerCase()}. The {silhouette.toLowerCase()} direction keeps the look {personality.toLowerCase()} without feeling overworked.</p><ul><li>{accessories.shoes[look.shoes]}</li><li>{accessories.bag[look.bag]}</li><li>{accessories.jewellery[look.jewellery]}</li><li>{accessories.hair[look.hair]}</li></ul><div className="result-actions"><a href={`/product/${chosen.slug}`}>Explore the piece <ArrowRight size={16}/></a><button onClick={saveLook}><Bookmark size={15}/> Save look</button></div>{notice&&<small className="lab-notice"><Check size={14}/>{notice}</small>}</div></article></div>
       <div className="lab-dress-picker"><div><span>CHOOSE ANOTHER PIECE</span><small>{dresses.length} dresses available</small></div><div>{dresses.map(p=><button className={p.id===chosen.id?"active":""} onClick={()=>setRecommendation(p)} key={p.id}><img src={p.image} alt=""/><span>{p.name}</span><b>{naira(p.price)}</b></button>)}</div></div>
     </section>
